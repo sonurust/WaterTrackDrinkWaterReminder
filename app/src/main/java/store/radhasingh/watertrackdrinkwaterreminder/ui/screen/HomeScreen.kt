@@ -83,29 +83,40 @@ fun HomeScreen(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    // Circular Progress
+                    // Circular Progress with Two Circle Lines
                     Box(
-                        modifier = Modifier.size(120.dp),
+                        modifier = Modifier.size(140.dp),
                         contentAlignment = Alignment.Center
                     ) {
+                        // Background Circle (Light)
+                        CircularProgressIndicator(
+                            progress = 1f,
+                            modifier = Modifier.size(140.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            strokeWidth = 6.dp
+                        )
+                        
+                        // Progress Circle (Energy Blue)
                         CircularProgressIndicator(
                             progress = progressPercentage,
-                            modifier = Modifier.size(120.dp),
+                            modifier = Modifier.size(140.dp),
                             color = MaterialTheme.colorScheme.primary,
-                            strokeWidth = 8.dp
+                            strokeWidth = 6.dp
                         )
+                        
+                        // Center Content
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
                                 text = "${(progressPercentage * 100).toInt()}%",
-                                style = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.headlineLarge,
+                                fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = "${todayTotalVolume}ml",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
