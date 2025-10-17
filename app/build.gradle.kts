@@ -5,6 +5,13 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+// Load keystore properties
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = java.util.Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(java.io.FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "store.radhasingh.watertrackdrinkwaterreminder"
     compileSdk = 36
@@ -19,6 +26,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -26,6 +44,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     compileOptions {
@@ -51,6 +72,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("com.google.android.material:material:1.11.0")
     
     // Koin
     implementation(libs.koin.android)
