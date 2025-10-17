@@ -37,24 +37,17 @@ fun AddGlassScreen(
     var selectedDrinkType by remember { mutableStateOf(DrinkTypeUtils.availableDrinkTypes.first()) }
     var selectedVolume by remember { mutableStateOf(250) } // Default 250ml
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFE3F2FD),
-                        Color(0xFFBBDEFB)
-                    )
-                )
-            )
-    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        ) {
         // Top App Bar
         TopAppBar(
             title = {
                 Text(
                     text = "Add Drink",
-                    color = Color(0xFF1976D2),
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold
                 )
             },
@@ -63,7 +56,7 @@ fun AddGlassScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
-                        tint = Color(0xFF1976D2)
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             },
@@ -79,13 +72,13 @@ fun AddGlassScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Drink Type Selection
-            Text(
-                text = "Select Drink Type",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1976D2),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+                Text(
+                    text = "Select Drink Type",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -101,13 +94,13 @@ fun AddGlassScreen(
             }
 
             // Volume Selection
-            Text(
-                text = "Select Volume",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1976D2),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+                Text(
+                    text = "Select Volume",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -123,22 +116,22 @@ fun AddGlassScreen(
             }
 
             // Add Button
-            Button(
-                onClick = {
-                    viewModel.addDrinkEntry(
-                        drinkType = selectedDrinkType.name,
-                        volume = selectedVolume
+                Button(
+                    onClick = {
+                        viewModel.addDrinkEntry(
+                            drinkType = selectedDrinkType.name,
+                            volume = selectedVolume
+                        )
+                        onBackClick()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
                     )
-                    onBackClick()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1976D2)
-                )
-            ) {
+                ) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
@@ -168,7 +161,7 @@ fun DrinkTypeCard(
             .clickable { onClick() },
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) Color(0xFF1976D2) else Color.White
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = if (isSelected) 16.dp else 6.dp
@@ -195,7 +188,7 @@ fun DrinkTypeCard(
                 text = drinkType.name,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = if (isSelected) Color.White else Color.Black,
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
@@ -216,7 +209,7 @@ fun VolumeCard(
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) Color(0xFF1976D2) else Color.White
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = if (isSelected) 8.dp else 2.dp
@@ -230,7 +223,7 @@ fun VolumeCard(
                 text = "${volume}ml",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = if (isSelected) Color.White else Color(0xFF1976D2)
+                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
             )
         }
     }

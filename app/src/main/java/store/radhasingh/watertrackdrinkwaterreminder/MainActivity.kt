@@ -58,8 +58,11 @@ class MainActivity : ComponentActivity() {
         checkNotificationPermission()
         
         setContent {
+            // Directly observe ThemeManager state
+            val isDarkTheme = ThemeManager.isDarkTheme
+            
             WaterTrackDrinkWaterReminderTheme(
-                darkTheme = ThemeManager.isDarkTheme
+                darkTheme = isDarkTheme
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

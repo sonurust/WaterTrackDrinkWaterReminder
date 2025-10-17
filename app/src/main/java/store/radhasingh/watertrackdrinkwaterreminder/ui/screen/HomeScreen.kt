@@ -70,7 +70,7 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
@@ -80,7 +80,7 @@ fun HomeScreen(
                         text = "Today's Progress",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF1976D2)
+                        color = MaterialTheme.colorScheme.primary
                     )
                     
                     Spacer(modifier = Modifier.height(16.dp))
@@ -93,7 +93,7 @@ fun HomeScreen(
                         CircularProgressIndicator(
                             progress = progressPercentage,
                             modifier = Modifier.size(120.dp),
-                            color = Color(0xFF1976D2),
+                            color = MaterialTheme.colorScheme.primary,
                             strokeWidth = 8.dp
                         )
                         Column(
@@ -103,12 +103,12 @@ fun HomeScreen(
                                 text = "${(progressPercentage * 100).toInt()}%",
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFF1976D2)
+                                color = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = "${todayTotalVolume}ml",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color.Gray
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -118,7 +118,7 @@ fun HomeScreen(
                     Text(
                         text = "Goal: ${dailyGoal}ml",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -128,7 +128,7 @@ fun HomeScreen(
                 text = "Today's Drinks",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1976D2),
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
@@ -136,7 +136,7 @@ fun HomeScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Box(
                         modifier = Modifier
@@ -144,12 +144,12 @@ fun HomeScreen(
                             .padding(32.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "No drinks logged today.\nTap the + button to add your first drink!",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray,
-                            textAlign = TextAlign.Center
-                        )
+                            Text(
+                                text = "No drinks logged today.\nTap the + button to add your first drink!",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center
+                            )
                     }
                 }
                 } else {
@@ -181,7 +181,7 @@ fun HomeScreen(
                                     Card(
                                         modifier = Modifier.fillMaxSize(),
                                         shape = RoundedCornerShape(12.dp),
-                                        colors = CardDefaults.cardColors(containerColor = Color.Red)
+                                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.error)
                                     ) {
                                         Box(
                                             modifier = Modifier
@@ -192,7 +192,7 @@ fun HomeScreen(
                                             Icon(
                                                 imageVector = Icons.Default.Delete,
                                                 contentDescription = "Delete",
-                                                tint = Color.White,
+                                                tint = MaterialTheme.colorScheme.onError,
                                                 modifier = Modifier.size(28.dp)
                                             )
                                         }
@@ -206,20 +206,20 @@ fun HomeScreen(
                 }
         }
 
-        // Floating Action Button
-        FloatingActionButton(
-            onClick = onAddGlassClick,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            containerColor = Color(0xFF1976D2)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Add Glass",
-                tint = Color.White
-            )
-        }
+            // Floating Action Button
+            FloatingActionButton(
+                onClick = onAddGlassClick,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Glass",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
     }
 }
 
@@ -230,7 +230,7 @@ fun DrinkEntryCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
@@ -243,7 +243,7 @@ fun DrinkEntryCard(
                 modifier = Modifier
                     .size(60.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFE3F2FD)),
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -269,7 +269,7 @@ fun DrinkEntryCard(
                 Text(
                     text = entry.timestamp.format(DateTimeFormatter.ofPattern("HH:mm")),
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             
@@ -277,7 +277,7 @@ fun DrinkEntryCard(
                 text = "${entry.volume}ml",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1976D2)
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

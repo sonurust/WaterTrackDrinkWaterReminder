@@ -71,23 +71,19 @@ fun SettingsScreen(
         onDispose { /* No specific cleanup needed here */ }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFFBBDEFB), Color.White)
-                )
-            )
-    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        ) {
         TopAppBar(
-            title = { Text("Settings", color = Color.White) },
+            title = { Text("Settings", color = MaterialTheme.colorScheme.onPrimary) },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFF2196F3)
+                containerColor = MaterialTheme.colorScheme.primary
             ),
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
-                    Icon(Icons.Filled.ArrowBack, "Back", tint = Color.White)
+                    Icon(Icons.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         )
