@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -186,47 +187,43 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Button(
-                            onClick = { 
-                                if (dailyGoal > 500) {
-                                    dailyGoal -= 250
-                                    viewModel.updateDailyGoal(dailyGoal)
-                                }
-                            },
-                            enabled = dailyGoal > 500,
-                            modifier = Modifier.size(40.dp),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text("-")
-                        }
-                        
-                        Spacer(modifier = Modifier.width(16.dp))
-                        
+                    Column {
                         Text(
                             text = "${dailyGoal}ml",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF1976D2),
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
-                        
-                        Spacer(modifier = Modifier.width(16.dp))
-                        
-                        Button(
-                            onClick = { 
-                                if (dailyGoal < 5000) {
-                                    dailyGoal += 250
-                                    viewModel.updateDailyGoal(dailyGoal)
-                                }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Slider(
+                            value = dailyGoal.toFloat(),
+                            onValueChange = { newValue ->
+                                dailyGoal = newValue.toInt()
+                                viewModel.updateDailyGoal(dailyGoal)
                             },
-                            enabled = dailyGoal < 5000,
-                            modifier = Modifier.size(40.dp),
-                            shape = RoundedCornerShape(8.dp)
+                            valueRange = 500f..5000f,
+                            steps = 17, // 4500 / 250 = 18 steps
+                            colors = SliderDefaults.colors(
+                                thumbColor = Color(0xFF1976D2),
+                                activeTrackColor = Color(0xFF1976D2),
+                                inactiveTrackColor = Color(0xFFE0E0E0)
+                            )
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("+")
+                            Text(
+                                text = "500ml",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "5000ml",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
                         }
                     }
                 }
@@ -257,47 +254,43 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Button(
-                            onClick = { 
-                                if (reminderInterval > 15) {
-                                    reminderInterval -= 15
-                                    viewModel.updateReminderInterval(reminderInterval)
-                                }
-                            },
-                            enabled = reminderInterval > 15,
-                            modifier = Modifier.size(40.dp),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text("-")
-                        }
-                        
-                        Spacer(modifier = Modifier.width(16.dp))
-                        
+                    Column {
                         Text(
                             text = "${reminderInterval} min",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF1976D2),
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
-                        
-                        Spacer(modifier = Modifier.width(16.dp))
-                        
-                        Button(
-                            onClick = { 
-                                if (reminderInterval < 240) {
-                                    reminderInterval += 15
-                                    viewModel.updateReminderInterval(reminderInterval)
-                                }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Slider(
+                            value = reminderInterval.toFloat(),
+                            onValueChange = { newValue ->
+                                reminderInterval = newValue.toInt()
+                                viewModel.updateReminderInterval(reminderInterval)
                             },
-                            enabled = reminderInterval < 240,
-                            modifier = Modifier.size(40.dp),
-                            shape = RoundedCornerShape(8.dp)
+                            valueRange = 15f..240f,
+                            steps = 14, // 225 / 15 = 15 steps
+                            colors = SliderDefaults.colors(
+                                thumbColor = Color(0xFF1976D2),
+                                activeTrackColor = Color(0xFF1976D2),
+                                inactiveTrackColor = Color(0xFFE0E0E0)
+                            )
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("+")
+                            Text(
+                                text = "15 min",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "4 hours",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
                         }
                     }
                 }
@@ -314,11 +307,28 @@ fun SettingsScreen(
                 Column(
                     modifier = Modifier.padding(20.dp)
                 ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = "Notifications",
+                            tint = Color(0xFF1976D2),
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Notification Settings",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color(0xFF1976D2)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Notifications",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF1976D2)
+                        text = "Customize how and when you receive water reminders",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     
@@ -328,10 +338,18 @@ fun SettingsScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "Enable Notifications",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Enable Water Reminders",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = "Receive notifications to stay hydrated",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
                         Switch(
                             checked = notificationsEnabled,
                             onCheckedChange = { 
@@ -349,10 +367,18 @@ fun SettingsScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "Sound",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Notification Sound",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = "Play sound when reminder arrives",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
                         Switch(
                             checked = soundEnabled,
                             onCheckedChange = { 
@@ -371,10 +397,18 @@ fun SettingsScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "Vibration",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Vibration Alert",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = "Vibrate device for silent reminders",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
                         Switch(
                             checked = vibrationEnabled,
                             onCheckedChange = { 
@@ -382,6 +416,42 @@ fun SettingsScreen(
                                 viewModel.updateVibrationEnabled(it)
                             },
                             enabled = notificationsEnabled
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Notification Preview Button
+                    if (notificationsEnabled && hasNotificationPermission) {
+                        Button(
+                            onClick = {
+                                // Show a preview notification
+                                viewModel.showNotificationPreview()
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF1976D2)
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Notifications,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Preview Notification",
+                                color = Color.White,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Tap to see how your water reminder notification will look",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                 }

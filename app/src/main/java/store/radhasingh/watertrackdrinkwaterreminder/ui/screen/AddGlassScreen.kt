@@ -17,13 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
-import store.radhasingh.watertrackdrinkwaterreminder.data.model.DrinkType
-import store.radhasingh.watertrackdrinkwaterreminder.data.model.PresetVolume
+import store.radhasingh.watertrackdrinkwaterreminder.data.model.DrinkEntry
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.HomeViewModel
+import store.radhasingh.watertrackdrinkwaterreminder.utils.DrinkTypeUtils
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,8 +34,8 @@ fun AddGlassScreen(
     onBackClick: () -> Unit,
     viewModel: HomeViewModel = koinViewModel()
 ) {
-    var selectedDrinkType by remember { mutableStateOf(DrinkType.WATER) }
-    var selectedVolume by remember { mutableStateOf(PresetVolume.PRESET_VOLUMES[1]) } // Default 200ml
+    var selectedDrinkType by remember { mutableStateOf(DrinkTypeUtils.availableDrinkTypes.first()) }
+    var selectedVolume by remember { mutableStateOf(250) } // Default 250ml
 
     Column(
         modifier = Modifier
@@ -88,7 +91,7 @@ fun AddGlassScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(bottom = 32.dp)
             ) {
-                items(DrinkType.values()) { drinkType ->
+                items(DrinkTypeUtils.availableDrinkTypes) { drinkType ->
                     DrinkTypeCard(
                         drinkType = drinkType,
                         isSelected = selectedDrinkType == drinkType,
@@ -110,7 +113,7 @@ fun AddGlassScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(bottom = 32.dp)
             ) {
-                items(PresetVolume.PRESET_VOLUMES) { volume ->
+                items(listOf(100, 150, 200, 250, 300, 350, 400, 500)) { volume ->
                     VolumeCard(
                         volume = volume,
                         isSelected = selectedVolume == volume,
@@ -123,8 +126,11 @@ fun AddGlassScreen(
             Button(
                 onClick = {
                     viewModel.addDrinkEntry(
-                        drinkType = selectedDrinkType.displayName,
-                        volume = selectedVolume.volume
+                        DrinkEntry(
+                            drinkType = selectedDrinkType.name,
+                            volume = selectedVolume,
+                            timestamp = LocalDateTime.now()
+                        )
                     )
                     onBackClick()
                 },
@@ -143,7 +149,7 @@ fun AddGlassScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Add ${selectedVolume.displayName} of ${selectedDrinkType.displayName}",
+                    text = "Add ${selectedVolume}ml of ${selectedDrinkType.name}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -154,14 +160,14 @@ fun AddGlassScreen(
 
 @Composable
 fun DrinkTypeCard(
-    drinkType: DrinkType,
+    drinkType: DrinkTypeUtils.DrinkType,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .width(100.dp)
-            .height(100.dp)
+            .height(120.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -178,17 +184,23 @@ fun DrinkTypeCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = drinkType.emoji,
-                fontSize = 32.sp
+            // Glass Image
+            androidx.compose.foundation.Image(
+                painter = painterResource(id = drinkType.imageResId),
+                contentDescription = drinkType.name,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = drinkType.displayName,
+                text = drinkType.name,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
                 color = if (isSelected) Color.White else Color.Black,
-                maxLines = 1
+                maxLines = 2,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
         }
     }
@@ -196,7 +208,7 @@ fun DrinkTypeCard(
 
 @Composable
 fun VolumeCard(
-    volume: PresetVolume,
+    volume: Int,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -218,7 +230,7 @@ fun VolumeCard(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = volume.displayName,
+                text = "${volume}ml",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = if (isSelected) Color.White else Color(0xFF1976D2)
