@@ -1,5 +1,6 @@
 package store.radhasingh.watertrackdrinkwaterreminder.ui.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.data.model.DrinkEntry
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.HomeViewModel
+import store.radhasingh.watertrackdrinkwaterreminder.utils.DrinkTypeUtils
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -198,17 +202,19 @@ fun DrinkEntryCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Drink type emoji/icon
+            // Drink type glass image
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .clip(CircleShape)
+                    .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFFE3F2FD)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "💧", // You can map this based on drink type
-                    fontSize = 20.sp
+                Image(
+                    painter = painterResource(id = DrinkTypeUtils.getImageResIdForDrinkType(entry.drinkType)),
+                    contentDescription = entry.drinkType,
+                    modifier = Modifier.size(32.dp),
+                    contentScale = ContentScale.Crop
                 )
             }
             

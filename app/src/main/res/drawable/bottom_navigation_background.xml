@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="80dp"
+    android:viewportWidth="360"
+    android:viewportHeight="80">
+    
+    <!-- Main navigation bar with curved center cutout -->
+    <path
+        android:pathData="M0,0 L140,0 L140,20 C140,20 160,20 160,20 C160,20 180,20 180,20 C180,20 200,20 200,20 C200,20 220,20 220,20 L220,0 L360,0 L360,80 L0,80 Z">
+        <aapt:attr name="android:fillColor" xmlns:aapt="http://schemas.android.com/aapt">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="360"
+                android:endY="80"
+                android:type="linear">
+                <item
+                    android:color="#E3F2FD"
+                    android:offset="0.0" />
+                <item
+                    android:color="#FFFFFF"
+                    android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    
+    <!-- Subtle top border with curve -->
+    <path
+        android:pathData="M0,0 L140,0 C140,0 140,20 140,20 C140,20 160,20 160,20 C160,20 180,20 180,20 C180,20 200,20 200,20 C200,20 220,20 220,20 L220,0 L360,0"
+        android:strokeWidth="0.5"
+        android:strokeColor="#B3E5FC" />
+    
+    <!-- Inner shadow effect for depth -->
+    <path
+        android:pathData="M0,0 L360,0 L360,1 L0,1 Z"
+        android:fillColor="#80B3E5FC" />
+        
+</vector>

@@ -57,6 +57,46 @@ class SettingsViewModel(
         }
     }
 
+    fun updateNotificationSound(soundName: String) {
+        viewModelScope.launch {
+            val currentSettings = _userSettings.value ?: UserSettings()
+            val updatedSettings = currentSettings.copy(selectedNotificationSound = soundName)
+            userSettingsRepository.updateSettings(updatedSettings)
+        }
+    }
+
+    fun updateButtonSound(soundName: String) {
+        viewModelScope.launch {
+            val currentSettings = _userSettings.value ?: UserSettings()
+            val updatedSettings = currentSettings.copy(selectedButtonSound = soundName)
+            userSettingsRepository.updateSettings(updatedSettings)
+        }
+    }
+
+    fun updateGoalSound(soundName: String) {
+        viewModelScope.launch {
+            val currentSettings = _userSettings.value ?: UserSettings()
+            val updatedSettings = currentSettings.copy(selectedGoalSound = soundName)
+            userSettingsRepository.updateSettings(updatedSettings)
+        }
+    }
+
+    fun updateVoiceEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            val currentSettings = _userSettings.value ?: UserSettings()
+            val updatedSettings = currentSettings.copy(voiceEnabled = enabled)
+            userSettingsRepository.updateSettings(updatedSettings)
+        }
+    }
+
+    fun updateAmbientSoundEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            val currentSettings = _userSettings.value ?: UserSettings()
+            val updatedSettings = currentSettings.copy(ambientSoundEnabled = enabled)
+            userSettingsRepository.updateSettings(updatedSettings)
+        }
+    }
+
     fun updateVibrationEnabled(enabled: Boolean) {
         viewModelScope.launch {
             val currentSettings = _userSettings.value ?: UserSettings()

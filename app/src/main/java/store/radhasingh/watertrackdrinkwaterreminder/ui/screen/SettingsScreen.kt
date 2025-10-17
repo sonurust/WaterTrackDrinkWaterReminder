@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,6 +29,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.SettingsViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.utils.PermissionUtils
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.SoundSelectionCard
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.SoundOption
+import store.radhasingh.watertrackdrinkwaterreminder.audio.SoundManager
+import store.radhasingh.watertrackdrinkwaterreminder.audio.SoundType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +42,9 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val userSettings by viewModel.userSettings.collectAsStateWithLifecycle()
+    
+    // Initialize SoundManager
+    val soundManager = remember { SoundManager(context) }
 
     var dailyGoal by remember { mutableStateOf(2000) }
     var reminderInterval by remember { mutableStateOf(60) }
@@ -44,6 +52,24 @@ fun SettingsScreen(
     var vibrationEnabled by remember { mutableStateOf(true) }
     var notificationsEnabled by remember { mutableStateOf(true) }
     var hasNotificationPermission by remember { mutableStateOf(false) }
+    var voiceEnabled by remember { mutableStateOf(true) }
+    var ambientSoundEnabled by remember { mutableStateOf(false) }
+    
+    // Sound options
+    val notificationSoundOptions = listOf(
+        SoundOption("soft_water_reminder", "Soft Water Reminder", "Gentle water drop with calm chime", SoundType.NOTIFICATION),
+        SoundOption("hydration_bell", "Hydration Bell", "Light bell with ripple echo effect", SoundType.NOTIFICATION)
+    )
+    
+    val buttonSoundOptions = listOf(
+        SoundOption("button_tap", "Button Tap", "Soft tap with water bubble tone", SoundType.BUTTON_TAP),
+        SoundOption("add_glass_confirmed", "Add Glass", "Bubbly pop with gentle chime", SoundType.ADD_GLASS)
+    )
+    
+    val goalSoundOptions = listOf(
+        SoundOption("goal_achieved", "Goal Achieved", "Melodic sparkle for goal completion", SoundType.GOAL_ACHIEVED),
+        SoundOption("goal_complete_voice", "Voice Celebration", "Voice message for goal completion", SoundType.GOAL_COMPLETE)
+    )
 
     // Permission launcher
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -65,6 +91,15 @@ fun SettingsScreen(
             soundEnabled = settings.soundEnabled
             vibrationEnabled = settings.vibrationEnabled
             notificationsEnabled = settings.notificationsEnabled
+            voiceEnabled = settings.voiceEnabled
+            ambientSoundEnabled = settings.ambientSoundEnabled
+        }
+    }
+    
+    // Cleanup SoundManager when composable is disposed
+    DisposableEffect(Unit) {
+        onDispose {
+            soundManager.release()
         }
     }
 
@@ -452,6 +487,160 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.Gray,
                             modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
+            
+            // Enhanced Sound Settings
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.VolumeUp,
+                            contentDescription = "Sound Settings",
+                            tint = Color(0xFF1976D2),
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Sound Settings",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color(0xFF1976D2)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Customize sounds for different app interactions",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Voice Prompts
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Voice Prompts",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = "Enable voice messages for motivation",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
+                        Switch(
+                            checked = voiceEnabled,
+                            onCheckedChange = { 
+                                voiceEnabled = it
+                                viewModel.updateVoiceEnabled(it)
+                            },
+                            enabled = soundEnabled
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Ambient Sounds
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Ambient Background",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = "Play calming background sounds",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
+                        Switch(
+                            checked = ambientSoundEnabled,
+                            onCheckedChange = { 
+                                ambientSoundEnabled = it
+                                viewModel.updateAmbientSoundEnabled(it)
+                            },
+                            enabled = soundEnabled
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Sound Selection Cards
+                    if (soundEnabled) {
+                        Text(
+                            text = "Sound Selection",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color(0xFF1976D2)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        // Notification Sound Selection
+                        SoundSelectionCard(
+                            title = "Notification Sound",
+                            description = "Sound played for water reminders",
+                            currentSound = userSettings?.selectedNotificationSound ?: "soft_water_reminder",
+                            soundOptions = notificationSoundOptions,
+                            onSoundSelected = { soundName ->
+                                viewModel.updateNotificationSound(soundName)
+                            },
+                            onPreviewSound = { soundType ->
+                                soundManager.playSoundPreview(soundType)
+                            },
+                            enabled = soundEnabled && notificationsEnabled
+                        )
+                        
+                        // Button Sound Selection
+                        SoundSelectionCard(
+                            title = "Button Sound",
+                            description = "Sound played when tapping buttons",
+                            currentSound = userSettings?.selectedButtonSound ?: "button_tap",
+                            soundOptions = buttonSoundOptions,
+                            onSoundSelected = { soundName ->
+                                viewModel.updateButtonSound(soundName)
+                            },
+                            onPreviewSound = { soundType ->
+                                soundManager.playSoundPreview(soundType)
+                            },
+                            enabled = soundEnabled
+                        )
+                        
+                        // Goal Sound Selection
+                        SoundSelectionCard(
+                            title = "Goal Achievement Sound",
+                            description = "Sound played when reaching daily goal",
+                            currentSound = userSettings?.selectedGoalSound ?: "goal_achieved",
+                            soundOptions = goalSoundOptions,
+                            onSoundSelected = { soundName ->
+                                viewModel.updateGoalSound(soundName)
+                            },
+                            onPreviewSound = { soundType ->
+                                soundManager.playSoundPreview(soundType)
+                            },
+                            enabled = soundEnabled
                         )
                     }
                 }

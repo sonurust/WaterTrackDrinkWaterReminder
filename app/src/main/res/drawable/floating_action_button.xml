@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    
+    <!-- FAB background with gradient and shadow -->
+    <path
+        android:pathData="M32,4 C47.5,4 60,16.5 60,32 C60,47.5 47.5,60 32,60 C16.5,60 4,47.5 4,32 C4,16.5 16.5,4 32,4 Z">
+        <aapt:attr name="android:fillColor" xmlns:aapt="http://schemas.android.com/aapt">
+            <gradient
+                android:startX="32"
+                android:startY="4"
+                android:endX="32"
+                android:endY="60"
+                android:type="radial">
+                <item
+                    android:color="#2196F3"
+                    android:offset="0.0" />
+                <item
+                    android:color="#1976D2"
+                    android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    
+    <!-- Water glass icon in center -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,20 L24,44 L40,44 L40,20 L24,20 Z M26,22 L38,22 L38,42 L26,42 L26,22 Z" />
+    
+    <!-- Glass base -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,44 L42,44 L40,48 L24,48 L22,44 Z" />
+    
+    <!-- Water droplet inside glass -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M32,24 C32,24 30,26 30,28 C30,30 32,32 32,32 C32,32 34,30 34,28 C34,26 32,24 32,24 Z" />
+    
+    <!-- Water level indicator -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M26,36 L38,36 L38,38 L26,38 L26,36 Z" />
+    
+    <!-- Small water droplets around glass -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M18,28 C18,28 16,30 16,32 C16,34 18,36 18,36 C18,36 20,34 20,32 C20,30 18,28 18,28 Z" />
+    
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,32 C46,32 44,34 44,36 C44,38 46,40 46,40 C46,40 48,38 48,36 C48,34 46,32 46,32 Z" />
+        
+</vector>

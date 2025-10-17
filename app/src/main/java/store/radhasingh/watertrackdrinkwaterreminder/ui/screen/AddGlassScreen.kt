@@ -126,11 +126,8 @@ fun AddGlassScreen(
             Button(
                 onClick = {
                     viewModel.addDrinkEntry(
-                        DrinkEntry(
-                            drinkType = selectedDrinkType.name,
-                            volume = selectedVolume,
-                            timestamp = LocalDateTime.now()
-                        )
+                        drinkType = selectedDrinkType.name,
+                        volume = selectedVolume
                     )
                     onBackClick()
                 },

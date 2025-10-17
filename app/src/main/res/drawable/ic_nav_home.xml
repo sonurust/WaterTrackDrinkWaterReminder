@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <!-- Home icon for navigation -->
+  <path
+      android:fillColor="#2196F3"
+      android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z"/>
+  
+  <!-- Water droplet accent -->
+  <path
+      android:fillColor="#03DAC6"
+      android:pathData="M12,5c-0.3,0 -0.6,0.2 -0.8,0.4L12,6.5l0.8,-1.1C12.6,5.2 12.3,5 12,5z"/>
+</vector>

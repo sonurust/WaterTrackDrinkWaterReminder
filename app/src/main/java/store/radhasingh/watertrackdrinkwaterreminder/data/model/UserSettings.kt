@@ -11,5 +11,10 @@ data class UserSettings(
     val reminderIntervalMinutes: Int = 60, // Default 1 hour
     val soundEnabled: Boolean = true,
     val vibrationEnabled: Boolean = true,
-    val notificationsEnabled: Boolean = true
+    val notificationsEnabled: Boolean = true,
+    val selectedNotificationSound: String = "soft_water_reminder", // Default notification sound
+    val selectedButtonSound: String = "button_tap", // Default button sound
+    val selectedGoalSound: String = "goal_achieved", // Default goal achieved sound
+    val voiceEnabled: Boolean = true, // Enable voice prompts
+    val ambientSoundEnabled: Boolean = false // Enable ambient background sounds
 )
