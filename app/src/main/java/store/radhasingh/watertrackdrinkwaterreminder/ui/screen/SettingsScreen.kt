@@ -1,21 +1,32 @@
 package store.radhasingh.watertrackdrinkwaterreminder.ui.screen
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.SettingsViewModel
+import store.radhasingh.watertrackdrinkwaterreminder.utils.PermissionUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +34,7 @@ fun SettingsScreen(
     onBackClick: () -> Unit,
     viewModel: SettingsViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     val userSettings by viewModel.userSettings.collectAsStateWithLifecycle()
 
     var dailyGoal by remember { mutableStateOf(2000) }
@@ -30,6 +42,19 @@ fun SettingsScreen(
     var soundEnabled by remember { mutableStateOf(true) }
     var vibrationEnabled by remember { mutableStateOf(true) }
     var notificationsEnabled by remember { mutableStateOf(true) }
+    var hasNotificationPermission by remember { mutableStateOf(false) }
+
+    // Permission launcher
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasNotificationPermission = isGranted
+    }
+
+    // Check permission status
+    LaunchedEffect(Unit) {
+        hasNotificationPermission = PermissionUtils.hasNotificationPermission(context)
+    }
 
     // Update local state when userSettings changes
     LaunchedEffect(userSettings) {
@@ -82,6 +107,60 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
+            // Notification Permission Status
+            if (PermissionUtils.shouldRequestNotificationPermission()) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (hasNotificationPermission) Color(0xFFE8F5E8) else Color(0xFFFFEBEE)
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = if (hasNotificationPermission) Icons.Default.CheckCircle else Icons.Default.Warning,
+                            contentDescription = "Permission Status",
+                            tint = if (hasNotificationPermission) Color(0xFF4CAF50) else Color(0xFFFF5722),
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = if (hasNotificationPermission) "Notifications Enabled" else "Notification Permission Required",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = if (hasNotificationPermission) Color(0xFF2E7D32) else Color(0xFFD32F2F)
+                            )
+                            Text(
+                                text = if (hasNotificationPermission) 
+                                    "You'll receive water reminder notifications" 
+                                else 
+                                    "Allow notifications to receive water reminders",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = if (hasNotificationPermission) Color(0xFF388E3C) else Color(0xFFE53935)
+                            )
+                        }
+                        if (!hasNotificationPermission) {
+                            Button(
+                                onClick = {
+                                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+                            ) {
+                                Text("Allow", color = Color.White)
+                            }
+                        }
+                    }
+                }
+            }
+            
             // Daily Goal Setting
             Card(
                 modifier = Modifier

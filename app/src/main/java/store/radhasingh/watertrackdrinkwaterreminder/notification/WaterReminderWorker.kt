@@ -22,6 +22,7 @@ import org.koin.core.component.inject
 import store.radhasingh.watertrackdrinkwaterreminder.MainActivity
 import store.radhasingh.watertrackdrinkwaterreminder.R
 import store.radhasingh.watertrackdrinkwaterreminder.data.repository.UserSettingsRepository
+import store.radhasingh.watertrackdrinkwaterreminder.utils.PermissionUtils
 
 class WaterReminderWorker(
     context: Context,
@@ -89,12 +90,12 @@ class WaterReminderWorker(
             .build()
 
         val notificationManager = NotificationManagerCompat.from(applicationContext)
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationManager.notify(NOTIFICATION_ID, notification)
+        if (PermissionUtils.hasNotificationPermission(applicationContext)) {
+            try {
+                notificationManager.notify(NOTIFICATION_ID, notification)
+            } catch (e: SecurityException) {
+                // Permission was revoked at runtime, ignore notification
+            }
         }
     }
 
