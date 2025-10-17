@@ -163,38 +163,38 @@ fun DrinkTypeCard(
 ) {
     Card(
         modifier = Modifier
-            .width(100.dp)
-            .height(120.dp)
+            .width(280.dp)
+            .height(320.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) Color(0xFF1976D2) else Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isSelected) 8.dp else 2.dp
+            defaultElevation = if (isSelected) 16.dp else 6.dp
         )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Glass Image
+            // Glass Image - 250px size
             androidx.compose.foundation.Image(
                 painter = painterResource(id = drinkType.imageResId),
                 contentDescription = drinkType.name,
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .size(250.dp)
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = drinkType.name,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
                 color = if (isSelected) Color.White else Color.Black,
                 maxLines = 2,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center

@@ -11,6 +11,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -155,18 +159,58 @@ fun HomeScreen(
                         )
                     }
                 }
-            } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(todayEntries) { entry ->
-                        DrinkEntryCard(
-                            entry = entry,
-                            onDelete = { viewModel.deleteDrinkEntry(entry) }
-                        )
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(todayEntries) { entry ->
+                            val dismissState = rememberSwipeToDismissBoxState(
+                                confirmValueChange = { dismissValue ->
+                                    if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
+                                        viewModel.deleteDrinkEntry(entry)
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                }
+                            )
+                            
+                            LaunchedEffect(dismissState.currentValue) {
+                                if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
+                                    viewModel.deleteDrinkEntry(entry)
+                                }
+                            }
+                            
+                            SwipeToDismissBox(
+                                state = dismissState,
+                                modifier = Modifier.fillMaxWidth(),
+                                backgroundContent = {
+                                    Card(
+                                        modifier = Modifier.fillMaxSize(),
+                                        shape = RoundedCornerShape(12.dp),
+                                        colors = CardDefaults.cardColors(containerColor = Color.Red)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(16.dp),
+                                            contentAlignment = Alignment.CenterEnd
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Delete,
+                                                contentDescription = "Delete",
+                                                tint = Color.White,
+                                                modifier = Modifier.size(28.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            ) {
+                                DrinkEntryCard(entry = entry)
+                            }
+                        }
                     }
                 }
-            }
         }
 
         // Floating Action Button
@@ -188,8 +232,7 @@ fun HomeScreen(
 
 @Composable
 fun DrinkEntryCard(
-    entry: DrinkEntry,
-    onDelete: () -> Unit
+    entry: DrinkEntry
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -205,16 +248,18 @@ fun DrinkEntryCard(
             // Drink type glass image
             Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(12.dp))
                     .background(Color(0xFFE3F2FD)),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = DrinkTypeUtils.getImageResIdForDrinkType(entry.drinkType)),
                     contentDescription = entry.drinkType,
-                    modifier = Modifier.size(32.dp),
-                    contentScale = ContentScale.Crop
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Fit
                 )
             }
             
@@ -241,16 +286,6 @@ fun DrinkEntryCard(
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFF1976D2)
             )
-            
-            Spacer(modifier = Modifier.width(8.dp))
-            
-            IconButton(onClick = onDelete) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
-                    tint = Color.Red
-                )
-            }
         }
     }
 }
