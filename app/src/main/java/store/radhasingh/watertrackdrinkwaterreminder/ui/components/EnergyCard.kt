@@ -20,21 +20,16 @@ fun EnergyCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp)
-            .border(
-                width = 2.dp,
-                color = EnergyBlue,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .background(
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
-                RoundedCornerShape(16.dp)
-            ),
+            .padding(12.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        border = androidx.compose.foundation.BorderStroke(
+            width = 2.dp,
+            color = EnergyBlue
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -51,21 +46,16 @@ fun EnergyCardSmall(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .border(
-                width = 1.5.dp,
-                color = EnergyBlue.copy(alpha = 0.8f),
-                shape = RoundedCornerShape(12.dp)
-            )
-            .background(
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
-                RoundedCornerShape(12.dp)
-            ),
+            .padding(8.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        border = androidx.compose.foundation.BorderStroke(
+            width = 1.5.dp,
+            color = EnergyBlue.copy(alpha = 0.8f)
+        )
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
