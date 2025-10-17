@@ -118,13 +118,10 @@ class SettingsViewModel(
         }
     }
 
-    fun showNotificationPreview() {
+    fun resetData() {
         viewModelScope.launch {
-            val currentSettings = _userSettings.value ?: UserSettings()
-            notificationManager.showPreviewNotification(
-                soundEnabled = currentSettings.soundEnabled,
-                vibrationEnabled = currentSettings.vibrationEnabled
-            )
+            userSettingsRepository.deleteAllSettings()
+            userSettingsRepository.insertSettings(UserSettings()) // Re-initialize with default
         }
     }
 
