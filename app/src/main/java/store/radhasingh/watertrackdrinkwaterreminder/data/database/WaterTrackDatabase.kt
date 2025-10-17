@@ -13,7 +13,7 @@ import store.radhasingh.watertrackdrinkwaterreminder.data.converter.LocalDateTim
 
 @Database(
     entities = [DrinkEntry::class, UserSettings::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(LocalDateTimeConverter::class)
@@ -31,7 +31,9 @@ abstract class WaterTrackDatabase : RoomDatabase() {
                     context.applicationContext,
                     WaterTrackDatabase::class.java,
                     "water_track_database"
-                ).build()
+                )
+                .fallbackToDestructiveMigration() // For development - clears data on schema change
+                .build()
                 INSTANCE = instance
                 instance
             }
