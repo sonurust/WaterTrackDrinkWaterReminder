@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.EnergyCard
 import store.radhasingh.watertrackdrinkwaterreminder.ui.theme.ThemeManager
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.SettingsViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.utils.PermissionUtils
@@ -95,19 +96,11 @@ fun SettingsScreen(
         ) {
             // Notification Permission Status
             if (PermissionUtils.shouldRequestNotificationPermission()) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (hasNotificationPermission) Color(0xFFE8F5E8) else Color(0xFFFFEBEE)
-                    )
+                EnergyCard(
+                    modifier = Modifier.padding(bottom = 16.dp)
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -116,13 +109,13 @@ fun SettingsScreen(
                                 text = "Notification Permission",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF1976D2)
+                                color = MaterialTheme.colorScheme.primary
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = if (hasNotificationPermission) "Granted" else "Denied",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (hasNotificationPermission) Color(0xFF2E7D32) else Color(0xFFD32F2F)
+                                color = if (hasNotificationPermission) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
                             )
                         }
                         if (!hasNotificationPermission) {
@@ -132,9 +125,9 @@ fun SettingsScreen(
                                         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                                     }
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                             ) {
-                                Text("Request Permission", color = Color.White)
+                                Text("Request Permission", color = MaterialTheme.colorScheme.onPrimary)
                             }
                         }
                     }
@@ -150,7 +143,7 @@ fun SettingsScreen(
                 ) {
                     Button(
                         onClick = { if (dailyGoal > 100) dailyGoal -= 100 },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text("-")
                     }
@@ -161,7 +154,7 @@ fun SettingsScreen(
                         text = "${dailyGoal}ml",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1976D2),
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f)
                     )
 
@@ -169,7 +162,7 @@ fun SettingsScreen(
 
                     Button(
                         onClick = { dailyGoal += 100 },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text("+")
                     }
@@ -186,7 +179,7 @@ fun SettingsScreen(
                 ) {
                     Button(
                         onClick = { if (reminderInterval > 15) reminderInterval -= 15 },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text("-")
                     }
@@ -197,7 +190,7 @@ fun SettingsScreen(
                         text = "${reminderInterval} min",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1976D2),
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f)
                     )
 
@@ -205,7 +198,7 @@ fun SettingsScreen(
 
                     Button(
                         onClick = { reminderInterval += 15 },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text("+")
                     }
@@ -256,10 +249,10 @@ fun SettingsScreen(
                     onBackClick() // Go back after saving
                 },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Save Settings", color = Color.White)
+                Text("Save Settings", color = MaterialTheme.colorScheme.onPrimary)
             }
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -271,10 +264,10 @@ fun SettingsScreen(
                     onBackClick() // Go back after resetting
                 },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Reset All Data", color = Color.White)
+                Text("Reset All Data", color = MaterialTheme.colorScheme.onError)
             }
         }
     }
@@ -282,37 +275,23 @@ fun SettingsScreen(
 
 @Composable
 fun SettingItem(title: String, content: @Composable () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(2.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1976D2)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            content()
-        }
+    EnergyCard {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        content()
     }
 }
 
 @Composable
 fun SettingToggle(title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(2.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
-    ) {
+    EnergyCard {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -320,14 +299,14 @@ fun SettingToggle(title: String, checked: Boolean, onCheckedChange: (Boolean) ->
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1976D2)
+                color = MaterialTheme.colorScheme.primary
             )
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = Color(0xFF2196F3),
-                    checkedTrackColor = Color(0xFFBBDEFB)
+                    checkedThumbColor = MaterialTheme.colorScheme.primary,
+                    checkedTrackColor = MaterialTheme.colorScheme.secondary
                 )
             )
         }
