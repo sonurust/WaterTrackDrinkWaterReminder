@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import store.radhasingh.watertrackdrinkwaterreminder.ui.theme.ThemeManager
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.SettingsViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.utils.PermissionUtils
 
@@ -237,6 +238,14 @@ fun SettingsScreen(
                 title = "Notifications Enabled",
                 checked = notificationsEnabled,
                 onCheckedChange = { notificationsEnabled = it }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Theme Toggle
+            SettingToggle(
+                title = "Dark Theme",
+                checked = ThemeManager.isDarkTheme,
+                onCheckedChange = { ThemeManager.setTheme(it) }
             )
             Spacer(modifier = Modifier.height(24.dp))
 

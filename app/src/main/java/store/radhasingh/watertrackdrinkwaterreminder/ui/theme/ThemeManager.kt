@@ -12,7 +12,7 @@ object ThemeManager {
         isDarkTheme = !isDarkTheme
     }
 
-    fun setDarkTheme(isDark: Boolean) {
+    fun setTheme(isDark: Boolean) {
         isDarkTheme = isDark
     }
 }

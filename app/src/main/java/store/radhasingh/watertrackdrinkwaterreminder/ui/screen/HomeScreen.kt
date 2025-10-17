@@ -52,14 +52,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xFFE3F2FD),
-                            Color(0xFFBBDEFB)
-                        )
-                    )
-                )
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
         ) {
             // Header
@@ -67,7 +60,7 @@ fun HomeScreen(
                 text = "WaterTrack",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1976D2),
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 

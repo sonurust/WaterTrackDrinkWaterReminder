@@ -25,6 +25,7 @@ import store.radhasingh.watertrackdrinkwaterreminder.di.repositoryModule
 import store.radhasingh.watertrackdrinkwaterreminder.di.viewModelModule
 import store.radhasingh.watertrackdrinkwaterreminder.di.notificationModule
 import store.radhasingh.watertrackdrinkwaterreminder.ui.navigation.BottomNavigationBar
+import store.radhasingh.watertrackdrinkwaterreminder.ui.theme.ThemeManager
 import store.radhasingh.watertrackdrinkwaterreminder.ui.theme.WaterTrackDrinkWaterReminderTheme
 
 class MainActivity : ComponentActivity() {
@@ -57,7 +58,9 @@ class MainActivity : ComponentActivity() {
         checkNotificationPermission()
         
         setContent {
-            WaterTrackDrinkWaterReminderTheme {
+            WaterTrackDrinkWaterReminderTheme(
+                darkTheme = ThemeManager.isDarkTheme
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
