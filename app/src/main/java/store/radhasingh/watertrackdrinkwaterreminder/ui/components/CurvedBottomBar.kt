@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -27,11 +26,11 @@ fun CurvedBottomBar(
             .background(MaterialTheme.colorScheme.background)
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 80.dp)
         ) {
             // Home Tab
             IconButton(
@@ -46,28 +45,15 @@ fun CurvedBottomBar(
                 )
             }
             
-            // Stats Tab
+            // Settings Tab
             IconButton(
                 onClick = { onTabSelected(1) },
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
-                    Icons.Default.Info,
-                    contentDescription = "Stats",
-                    tint = if (selectedTab == 1) EnergyBlue else LightBlueGlow,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-            
-            // Settings Tab
-            IconButton(
-                onClick = { onTabSelected(2) },
-                modifier = Modifier.size(48.dp)
-            ) {
-                Icon(
                     Icons.Default.Settings,
                     contentDescription = "Settings",
-                    tint = if (selectedTab == 2) EnergyBlue else LightBlueGlow,
+                    tint = if (selectedTab == 1) EnergyBlue else LightBlueGlow,
                     modifier = Modifier.size(28.dp)
                 )
             }

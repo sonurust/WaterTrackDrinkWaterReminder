@@ -132,6 +132,46 @@ fun HomeScreen(
                 }
             }
 
+            // Statistics Section
+            EnergyCard(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Text(
+                        text = "Today's Statistics",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        StatItem(
+                            title = "Total Intake",
+                            value = "${todayTotalVolume}ml",
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        StatItem(
+                            title = "Goal Progress",
+                            value = "${(progressPercentage * 100).toInt()}%",
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                        StatItem(
+                            title = "Drinks Today",
+                            value = "${todayEntries.size}",
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Today's Entries
             Text(
                 text = "Today's Drinks",
@@ -270,5 +310,28 @@ fun DrinkEntryCard(
                 color = MaterialTheme.colorScheme.primary
             )
         }
+    }
+}
+
+@Composable
+fun StatItem(
+    title: String,
+    value: String,
+    color: androidx.compose.ui.graphics.Color
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }

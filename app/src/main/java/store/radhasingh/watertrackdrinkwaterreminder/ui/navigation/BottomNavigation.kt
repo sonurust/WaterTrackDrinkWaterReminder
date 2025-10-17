@@ -3,7 +3,6 @@ package store.radhasingh.watertrackdrinkwaterreminder.ui.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +19,6 @@ import androidx.navigation.compose.rememberNavController
 import store.radhasingh.watertrackdrinkwaterreminder.ui.components.CurvedBottomBar
 import store.radhasingh.watertrackdrinkwaterreminder.ui.screen.HomeScreen
 import store.radhasingh.watertrackdrinkwaterreminder.ui.screen.SettingsScreen
-import store.radhasingh.watertrackdrinkwaterreminder.ui.screen.StatsScreen
 
 sealed class BottomNavItem(
     val route: String,
@@ -28,7 +26,6 @@ sealed class BottomNavItem(
     val icon: ImageVector
 ) {
     object Home : BottomNavItem("home", "Home", Icons.Default.Home)
-    object Stats : BottomNavItem("stats", "Stats", Icons.Default.Info)
     object Settings : BottomNavItem("settings", "Settings", Icons.Default.Settings)
 }
 
@@ -43,8 +40,7 @@ fun BottomNavigationBar() {
         bottomBar = {
             val selectedTab = when (currentDestination?.route) {
                 "home" -> 0
-                "stats" -> 1
-                "settings" -> 2
+                "settings" -> 1
                 else -> 0
             }
             
@@ -53,8 +49,7 @@ fun BottomNavigationBar() {
                 onTabSelected = { tabIndex ->
                     val route = when (tabIndex) {
                         0 -> "home"
-                        1 -> "stats"
-                        2 -> "settings"
+                        1 -> "settings"
                         else -> "home"
                     }
                     navController.navigate(route) {
@@ -84,9 +79,6 @@ fun BottomNavigationBar() {
                 )
             }
             
-            composable(BottomNavItem.Stats.route) {
-                StatsScreen()
-            }
             
             composable(BottomNavItem.Settings.route) {
                 SettingsScreen(
