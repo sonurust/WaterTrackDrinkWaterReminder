@@ -13,18 +13,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF64B5F6), // Light blue for dark theme
-    secondary = Color(0xFF4FC3F7), // Cyan
-    tertiary = Color(0xFF81C784), // Light green
-    background = Color(0xFF121212), // Dark background
-    surface = Color(0xFF1E1E1E), // Dark surface
-    onPrimary = Color(0xFF000000), // Black text on light blue
-    onSecondary = Color(0xFF000000), // Black text on cyan
-    onTertiary = Color(0xFF000000), // Black text on green
-    onBackground = Color(0xFFFFFFFF), // White text on dark background
-    onSurface = Color(0xFFFFFFFF), // White text on dark surface
-    surfaceVariant = Color(0xFF2C2C2C), // Dark surface variant
-    onSurfaceVariant = Color(0xFFB0B0B0) // Light gray text
+    primary = Color(0xFF00E5FF), // Energy Blue
+    secondary = Color(0xFF80D8FF), // Light Blue Glow
+    tertiary = Color(0xFF40E0D0), // Turquoise accent
+    background = Color(0xFF0A1929), // Deep Blue Background
+    surface = Color(0xFF102A43), // Card Surface
+    onPrimary = Color(0xFF000000), // Black text on energy blue
+    onSecondary = Color(0xFF000000), // Black text on light blue
+    onTertiary = Color(0xFF000000), // Black text on turquoise
+    onBackground = Color(0xFFB3E5FC), // Text Primary (light cyan)
+    onSurface = Color(0xFF81D4FA), // Text Secondary (cyan)
+    surfaceVariant = Color(0xFF1A2332), // Dark surface variant
+    onSurfaceVariant = Color(0xFF4FC3F7), // Light cyan text
+    error = Color(0xFFFF6B6B), // Energy red for errors
+    onError = Color(0xFF000000) // Black text on error
 )
 
 private val LightColorScheme = lightColorScheme(

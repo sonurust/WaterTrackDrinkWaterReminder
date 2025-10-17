@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.data.model.DrinkEntry
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.EnergyCard
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.EnergyCardSmall
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.EnergyFloatingButton
 import store.radhasingh.watertrackdrinkwaterreminder.ui.viewmodel.HomeViewModel
 import store.radhasingh.watertrackdrinkwaterreminder.utils.DrinkTypeUtils
 import java.time.format.DateTimeFormatter
@@ -65,15 +68,10 @@ fun HomeScreen(
             )
 
             // Progress Card
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            EnergyCard(
+                modifier = Modifier.padding(bottom = 16.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -207,19 +205,12 @@ fun HomeScreen(
         }
 
             // Floating Action Button
-            FloatingActionButton(
+            EnergyFloatingButton(
                 onClick = onAddGlassClick,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Glass",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+                    .padding(16.dp)
+            )
     }
 }
 
@@ -227,15 +218,9 @@ fun HomeScreen(
 fun DrinkEntryCard(
     entry: DrinkEntry
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
+    EnergyCardSmall {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Drink type glass image

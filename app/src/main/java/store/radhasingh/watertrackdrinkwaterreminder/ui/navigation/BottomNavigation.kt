@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import store.radhasingh.watertrackdrinkwaterreminder.ui.components.CurvedBottomBar
 import store.radhasingh.watertrackdrinkwaterreminder.ui.screen.HomeScreen
 import store.radhasingh.watertrackdrinkwaterreminder.ui.screen.SettingsScreen
 import store.radhasingh.watertrackdrinkwaterreminder.ui.screen.StatsScreen
@@ -40,30 +41,31 @@ fun BottomNavigationBar() {
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                val bottomNavItems = listOf(
-                    BottomNavItem.Home,
-                    BottomNavItem.Stats,
-                    BottomNavItem.Settings
-                )
-                
-                bottomNavItems.forEach { item ->
-                    NavigationBarItem(
-                        icon = { Icon(item.icon, contentDescription = item.title) },
-                        label = { Text(item.title) },
-                        selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
-                }
+            val selectedTab = when (currentDestination?.route) {
+                "home" -> 0
+                "stats" -> 1
+                "settings" -> 2
+                else -> 0
             }
+            
+            CurvedBottomBar(
+                selectedTab = selectedTab,
+                onTabSelected = { tabIndex ->
+                    val route = when (tabIndex) {
+                        0 -> "home"
+                        1 -> "stats"
+                        2 -> "settings"
+                        else -> "home"
+                    }
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
     ) { innerPadding ->
         NavHost(
