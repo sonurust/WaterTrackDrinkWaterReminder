@@ -18,7 +18,7 @@ import store.radhasingh.watertrackdrinkwaterreminder.di.databaseModule
 import store.radhasingh.watertrackdrinkwaterreminder.di.repositoryModule
 import store.radhasingh.watertrackdrinkwaterreminder.di.viewModelModule
 import store.radhasingh.watertrackdrinkwaterreminder.di.notificationModule
-import store.radhasingh.watertrackdrinkwaterreminder.ui.navigation.WaterTrackNavigation
+import store.radhasingh.watertrackdrinkwaterreminder.ui.navigation.BottomNavigationBar
 import store.radhasingh.watertrackdrinkwaterreminder.ui.theme.WaterTrackDrinkWaterReminderTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,17 +38,13 @@ class MainActivity : ComponentActivity() {
         
         enableEdgeToEdge()
         
-        // Check if we should open AddGlass screen from notification
-        val shouldOpenAddGlass = intent.getBooleanExtra("open_add_glass", false)
-        val startDestination = if (shouldOpenAddGlass) "add_glass" else "home"
-        
         setContent {
             WaterTrackDrinkWaterReminderTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    WaterTrackNavigation(startDestination = startDestination)
+                    BottomNavigationBar()
                 }
             }
         }

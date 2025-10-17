@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun HomeScreen(
     onAddGlassClick: () -> Unit,
+    onSettingsClick: () -> Unit = {},
     viewModel: HomeViewModel = koinViewModel()
 ) {
     val todayEntries by viewModel.todayEntries.collectAsStateWithLifecycle()
